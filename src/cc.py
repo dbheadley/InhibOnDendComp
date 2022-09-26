@@ -4,7 +4,6 @@ Author: Drew B. Headley
 """
 
 import numpy as np
-from numpy.random import randint
 
 
 def ccptpt(oth, ref, bin=1, win=[-10, 10]):
@@ -14,7 +13,8 @@ def ccptpt(oth, ref, bin=1, win=[-10, 10]):
     Parameters
     ----------
     oth : array-like of ints 
-        the times for the other point process. Should be sorted in ascending order and integers.
+        the times for the other point process. Should be sorted in ascending 
+        order and integers.
     ref : array-like of ints
         the times for the reference point process. Should be sorted in 
         ascending order and integers.
@@ -37,6 +37,7 @@ def ccptpt(oth, ref, bin=1, win=[-10, 10]):
     bins and a window of -20 to 20 ms.
     
     """
+
     b_edge = win[0] * bin
     t_edge = win[1] * bin
 
@@ -80,22 +81,30 @@ def ccptpt(oth, ref, bin=1, win=[-10, 10]):
 
     # bin accumulated cc coints by the bin size
     if bin == 1:
-        return cc_temp, win_edges
+        return {"counts": cc_temp, "tedges": win_edges}
     else:
         cc_temp = np.reshape(cc_temp, [-1, bin])
         cc = np.sum(cc_temp, axis=1)
         bin_edges = np.array(range(b_edge, t_edge, bin))
-        return cc, bin_edges
+        return {"counts": cc, "tedges": win_edges}
 
 
 # Debug test
 if __name__ == "__main__":
-    ref_pts = np.sort(randint(0, 100000, 10000))
-    oth_pts = np.sort(randint(0, 100000, 10000))
-    cc, edges = ccptpt(oth_pts, ref_pts, 1, [-10, 10])
-    print(cc)
-    print(edges)
+    from numpy.random import randint
+    import time
 
-    cc, edges = ccptpt(ref_pts, ref_pts, 2, [-10, 10])
-    print(cc)
-    print(edges)
+    ref_pts = np.sort(randint(0, 10000000, 1000000))
+    oth_pts = np.sort(randint(0, 10000000, 1000000))
+    tic = time.perf_counter()
+    cc, edges = ccptpt(oth_pts, ref_pts, 2, [-10, 10])
+    toc = time.perf_counter()
+    print(
+        "A crosscorrelation with 1M reference spikes took {} seconds".format(
+            (toc - tic)
+        )
+    )
+
+    auto_pts = np.arange(0, 100)
+    cc, edges = ccptpt(auto_pts, auto_pts, 1, [-1, 1])
+    print("An autocorrelation found {} points of 100 at the middle bin".format(cc[1]))

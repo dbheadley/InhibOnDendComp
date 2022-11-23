@@ -21,7 +21,7 @@ na_evts = pd.read_csv("../data/DendEventTimes/na_spk_times.csv")
 
 # create dataframe of node ID and electrotonic percentile
 
-# first combine all dendritic spike dataframes no no node ID is left out
+# first combine all dendritic spike dataframes so no node ID is left out
 node_elec = pd.concat(
     [
         nmda_evts[["segmentID", "Elec_distance"]],

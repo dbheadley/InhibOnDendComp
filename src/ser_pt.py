@@ -58,9 +58,6 @@ def ser_pt(pts, step_len, win_lim):
 
 
 if __name__ == "__main__":
-    import pdb
-    from numpy.random import randint
-
     print("Testing ser_pt.py")
     test_pts = [0, 1, 13, 14, 15, 20]
     test_ser = ser_pt(test_pts, 2, [0, 20])

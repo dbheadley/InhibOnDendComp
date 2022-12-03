@@ -3,7 +3,9 @@ Author: Drew B. Headley
 
 """
 import numpy as np
+import sys
 
+sys.path.append(".")  # have to do this for relative imports to work consistently
 from .ser_ss import ser_ss
 from .ser_pt import ser_pt
 

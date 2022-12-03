@@ -29,7 +29,7 @@ def seg_dendevt(dspk_df):
     up_colname = [x for x in dspk_df.columns if x.endswith("upper_bound")]
 
     # group times within segments
-    agg_funcs = {"Elec_distanceQ": lambda x: x.iloc[0]}
+    agg_funcs = {"Elec_distanceQ": lambda x: x.iloc[0], "Type": lambda x: x.iloc[0]}
     if len(low_colname) == 1:
         agg_funcs[low_colname[0]] = list
     if len(up_colname) == 1:

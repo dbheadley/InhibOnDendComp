@@ -5,6 +5,7 @@ Author: Drew B. Headley
 
 import numpy as np
 
+
 def cc_serpt(oth_ser, ref_pt, bin=1, win=[-10, 10]):
     """
     Calculates the cross-correlation a time series and point process. This

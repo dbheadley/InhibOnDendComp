@@ -1,0 +1,16 @@
+name: dend_comp
+channels:
+  - defaults
+dependencies:
+  - python=3.9
+  - pandas
+  - holoviews
+  - r-params
+  - scipy
+  - scikit-image
+  - statsmodels
+  - h5py
+  - flake8
+  - prettytable
+  - black
+prefix: C:\Users\dbh60\.conda\envs\ds

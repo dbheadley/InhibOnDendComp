@@ -1,4 +1,4 @@
-""" Generate binary series using point process times
+""" Generate count series using point process times
 Author: Drew B. Headley
 
 """

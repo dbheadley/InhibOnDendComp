@@ -65,20 +65,28 @@ def cc_ptpt(oth_pts, ref_pts, bin_size, win=[-10, 10], sm_win=1):
     ac_ref = lagged_dot_prod(ref_binned, ref_binned, rel_inds)
 
     # correct for the autocorrelations
-    """
+
     sm_kern = np.ones(sm_win) / sm_win
     # add repeated elements to edges of cc to avoid boundary effects
-    cc_b = np.concatenate([cc[:sm_win-1], cc, cc[-sm_win:]])
-    ac_oht_b = np.concatenate([ac_oth[:sm_win], ac_oth])
-    
-    cc = np.convolve(cc, sm_kern, mode='same')
-    """
+    cc_b = np.pad(cc, (sm_win, sm_win), mode="reflect")
+    ac_oth_b = np.pad(ac_oth, (sm_win, sm_win), mode="reflect")
+    ac_ref_b = np.pad(ac_ref, (sm_win, sm_win), mode="reflect")
 
-    cc_fft = np.fft.fft(cc - np.mean(cc))
-    ac_oth_fft = np.fft.fft(ac_oth - np.mean(ac_oth))
-    ac_ref_fft = np.fft.fft(ac_ref - np.mean(ac_ref))
+    cc_b = np.convolve(cc_b, sm_kern, mode="same")
+    ac_oth_b = np.convolve(ac_oth_b, sm_kern, mode="same")
+    ac_ref_b = np.convolve(ac_ref_b, sm_kern, mode="same")
+
+    # remove padding from ccs
+    cc_b = cc_b[sm_win:-sm_win]
+    ac_oth_b = ac_oth_b[sm_win:-sm_win]
+    ac_ref_b = ac_ref_b[sm_win:-sm_win]
+
+    # correct cc for autocorrelations
+    cc_fft = np.fft.rfft(cc_b)
+    ac_oth_fft = np.fft.rfft(ac_oth_b)
+    ac_ref_fft = np.fft.rfft(ac_ref_b)
     cc_fft /= np.sqrt(ac_oth_fft * ac_ref_fft)
-    cc_corr = np.fft.ifft(cc_fft)
+    cc_corr = np.fft.irfft(cc_fft)
 
     cc_dict = {
         "values": cc,

@@ -13,7 +13,7 @@ from .load_spike_aux_h5 import load_spike_aux_h5
 from .cc_ptpt import cc_ptpt
 
 
-def cc_presyn_phdep_files(presyn_fname, ap_fname, rhym_ser, step_len, win, sm_win=1):
+def cc_presyn_phdep_files(presyn_fname, ap_fname, rhym_ser, step_len, win, **kwargs):
     """
     Uses the files for the preynaptic spikes and phase of an afferent rhythm,
     calculate a phase stratified cross-correlation between presynaptic spikes
@@ -32,8 +32,8 @@ def cc_presyn_phdep_files(presyn_fname, ap_fname, rhym_ser, step_len, win, sm_wi
     win : [int, int] (default is [-10, 10])
         a 2 element list-like specifying the number of bins for either edge
         of the cross correlation function
-    sm_win : int (default is 1)
-        the number of bins to smooth the cross-correlation function by
+    kwargs: arguments for cc_ptpt
+
 
     Returns
     ----------
@@ -61,8 +61,8 @@ def cc_presyn_phdep_files(presyn_fname, ap_fname, rhym_ser, step_len, win, sm_wi
 
     # calculate cross-correlation
     cc = {}
-    cc["t"] = cc_ptpt(spk_pts, pre_pts_t, step_len, win, sm_win)
-    cc["p"] = cc_ptpt(spk_pts, pre_pts_p, step_len, win, sm_win)
+    cc["t"] = cc_ptpt(spk_pts, pre_pts_t, step_len, win, **kwargs)
+    cc["p"] = cc_ptpt(spk_pts, pre_pts_p, step_len, win, **kwargs)
 
     return cc
 

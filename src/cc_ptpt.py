@@ -10,7 +10,7 @@ import numpy as np
 from .ser_pt import ser_pt
 
 
-def cc_ptpt(oth_pts, ref_pts, bin_size, win=[-10, 10], sm_win=1):
+def cc_ptpt(oth_pts, ref_pts, bin_size, win=[-10, 10], sm_win=1, notch_freq=None):
     """
     Calculates the cross-correlation between two point processes.
     Not optimized for speed.
@@ -28,6 +28,8 @@ def cc_ptpt(oth_pts, ref_pts, bin_size, win=[-10, 10], sm_win=1):
         of the cross correlation function
     sm_win : int (default is 1)
         the number of bins to smooth the cross-correlation function by
+    notch_freq : numeric (default is None)
+        the frequency to notch out of the corrected cross-correlation function
 
     Returns
     ----------
@@ -82,13 +84,19 @@ def cc_ptpt(oth_pts, ref_pts, bin_size, win=[-10, 10], sm_win=1):
     ac_ref_b = ac_ref_b[sm_win:-sm_win]
 
     # correct cc for autocorrelations
-
     cc_fft = np.fft.rfft(cc_b)
     ac_oth_fft = np.fft.rfft(ac_oth_b)
     ac_ref_fft = np.fft.rfft(ac_ref_b)
     cc_fft /= np.sqrt(ac_oth_fft * ac_ref_fft)
-    # cc_fft[-4:] = 0  # remove high frequency noise
+
+    # remove frequencies around notch
+    freqs = np.fft.rfftfreq(cc_b.size, d=0.001)
+    if notch_freq is not None:
+        notch_ind = np.argmin(np.abs(freqs - notch_freq))
+        cc_fft[notch_ind - 1 : notch_ind + 2] = 0
+
     cc_corr = np.fft.irfft(cc_fft, len(cc_b))
+
     cc_dict = {
         "values": cc,
         "lags": rel_inds,

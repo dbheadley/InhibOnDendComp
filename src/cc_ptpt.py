@@ -82,12 +82,13 @@ def cc_ptpt(oth_pts, ref_pts, bin_size, win=[-10, 10], sm_win=1):
     ac_ref_b = ac_ref_b[sm_win:-sm_win]
 
     # correct cc for autocorrelations
+
     cc_fft = np.fft.rfft(cc_b)
     ac_oth_fft = np.fft.rfft(ac_oth_b)
     ac_ref_fft = np.fft.rfft(ac_ref_b)
     cc_fft /= np.sqrt(ac_oth_fft * ac_ref_fft)
-    cc_corr = np.fft.irfft(cc_fft)
-
+    # cc_fft[-4:] = 0  # remove high frequency noise
+    cc_corr = np.fft.irfft(cc_fft, len(cc_b))
     cc_dict = {
         "values": cc,
         "lags": rel_inds,

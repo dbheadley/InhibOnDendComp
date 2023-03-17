@@ -93,7 +93,7 @@ def cc_ptpt(oth_pts, ref_pts, bin_size, win=[-10, 10], sm_win=1, notch_freq=None
     freqs = np.fft.rfftfreq(cc_b.size, d=0.001)
     if notch_freq is not None:
         notch_ind = np.argmin(np.abs(freqs - notch_freq))
-        cc_fft[notch_ind - 1 : notch_ind + 2] = 0
+        cc_fft[notch_ind] = 0
 
     cc_corr = np.fft.irfft(cc_fft, len(cc_b))
 

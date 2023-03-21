@@ -19,13 +19,14 @@ def ser_seg_dendevt(seg_df, **kwargs):
     ----------
     seg_df : dataframe
         dendritic spike events grouped by segment
+    **kwargs : named arguments to pass to ser_ss
 
     Returns
     ----------
     seg_df : dataframe
         dendritic spike events grouped by their segment with added column
         containing binary time series. Column name is '<event_type>_ser'
-    **kwargs : named arguments to pass to ser_ss
+
     Examples
     ----------
 

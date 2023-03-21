@@ -4,7 +4,7 @@ Author: Drew B. Headley
 """
 
 
-def seg_dendevt(dspk_df):
+def seg_dendevt(dspk_df, agg_colname="Elec_distanceQ"):
     """
     Takes a dendritic events dataframe and aggregates event times by segment.
 
@@ -13,6 +13,8 @@ def seg_dendevt(dspk_df):
     dspk_df : dataframe
         dendritic spike events and their corresponding segments and
         segment properties
+    agg_colname : str (default: "Elec_distanceQ")
+        column name to aggregate by
 
     Returns
     ----------
@@ -29,7 +31,7 @@ def seg_dendevt(dspk_df):
     up_colname = [x for x in dspk_df.columns if x.endswith("upper_bound")]
 
     # group times within segments
-    agg_funcs = {"Elec_distanceQ": lambda x: x.iloc[0], "Type": lambda x: x.iloc[0]}
+    agg_funcs = {agg_colname: lambda x: x.iloc[0], "Type": lambda x: x.iloc[0]}
     if len(low_colname) == 1:
         agg_funcs[low_colname[0]] = list
     if len(up_colname) == 1:
@@ -37,7 +39,7 @@ def seg_dendevt(dspk_df):
 
     # group events within the same segment
     seg_df = dspk_df.groupby("segmentID").aggregate(agg_funcs)
-    seg_df = seg_df.sort_values(["Elec_distanceQ", "segmentID"])
+    seg_df = seg_df.sort_values([agg_colname, "segmentID"])
 
     return seg_df
 

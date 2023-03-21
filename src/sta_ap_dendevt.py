@@ -7,7 +7,7 @@ from scipy.stats import ttest_1samp
 from .cc_serpt import cc_serpt
 
 
-def sta_ap_dendevt(seg_df, ap_pts, **kwargs):
+def sta_ap_dendevt(seg_df, ap_pts, agg_colname="Elec_distanceQ", **kwargs):
     """
     For each segment's dendritic event time series segment the cross-correlation
     with the action potential is calculated. The mean of these are then calculated
@@ -22,6 +22,8 @@ def sta_ap_dendevt(seg_df, ap_pts, **kwargs):
     ap_pts : numpy array of integers
         the indices in the dendritic spike event series where an action potential
         occurred
+    agg_colname : str (default: "Elec_distanceQ")
+        column name to aggregate dendritic compartments by
     **kwargs : arguments to pass to cc_serpt
 
     Returns
@@ -53,7 +55,7 @@ def sta_ap_dendevt(seg_df, ap_pts, **kwargs):
 
     # merge segments by electronic distance quantile
     agg_func = {"sta": lambda x: np.vstack(x)}
-    sta_df = seg_df.groupby(["Elec_distanceQ", "Type"]).aggregate(agg_func)
+    sta_df = seg_df.groupby([agg_colname, "Type"]).aggregate(agg_func)
 
     # mean percent change and t-stats by electrotonic distance
     sta_m = []

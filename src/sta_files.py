@@ -34,7 +34,7 @@ def sta_files(
     spk_data : string or numeric array
         if a string is provided, file path for somatic action potentials csv
         if a numeric array is provided, the spike times in samples
-    step_len : numeric
+    step_ser : numeric
         the length of each step in the series. Generally, it should be less
         than the shortest time between start and stop points. By default,
         it is set to that time

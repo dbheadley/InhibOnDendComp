@@ -6,7 +6,7 @@ import numpy as np
 from .bin_serser import bin_serser
 
 
-def bin_rhym_dendevt(seg_df, rhym_ser, bin_num):
+def bin_rhym_dendevt(seg_df, rhym_ser, bin_num, edges=None):
     """
     For each segment's dendritic event time series it is binned with
     respect to a rhythmic series.
@@ -19,6 +19,8 @@ def bin_rhym_dendevt(seg_df, rhym_ser, bin_num):
         the rhythmic signal to be binned with
     bin_num : integer
         number of bins to use for the rhym_ser
+    edges : array-like
+        bin edges, overrides bin_num
 
     Returns
     ----------
@@ -30,7 +32,10 @@ def bin_rhym_dendevt(seg_df, rhym_ser, bin_num):
 
     """
 
-    edges = np.linspace(-np.pi, np.pi, bin_num)
+    # set bin edges
+    if edges is None:
+        edges = np.linspace(-np.pi, np.pi, bin_num)
+    
 
     # determine event names
     ser_colname = [x for x in seg_df.columns if x.endswith("_ser")][0]

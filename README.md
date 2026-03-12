@@ -44,14 +44,6 @@ Run the Jupyter notebooks in `scripts/` to reproduce each figure:
 
 Data files are available for download from Dryad: https://datadryad.org/dataset/doi:10.5061/dryad.v6wwpzhb8
 
-| File / Directory | Description |
-|---|---|
-| `data/spikes.h5` | Somatic AP timestamps (HDF5) |
-| `data/apical_na.npy`, `data/apical_nmda.npy` | Apical dendritic spike event arrays |
-| `data/basal_na.npy`, `data/basal_nmda.npy` | Basal dendritic spike event arrays |
-| `data/DendEventTimes/` | Per-segment dendritic event timing |
-| `data/Figure*.csv` | Summary statistics used directly by figure notebooks |
-
 ## Key Analysis Methods
 
 - **Spike-Triggered Averages (STA)** – temporal coupling between dendritic and somatic spikes
